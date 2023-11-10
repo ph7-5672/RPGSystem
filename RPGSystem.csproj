@@ -1,0 +1,13 @@
+<Project Sdk="Godot.NET.Sdk/4.0.3">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="src\datatable\attributes.txt" />
+    <Content Include="src\datatable\buffs.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\script\Common\" />
+  </ItemGroup>
+</Project>
