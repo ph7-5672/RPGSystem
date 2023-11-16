@@ -1,7 +1,6 @@
-﻿using Game.System.Attribute;
-using Godot;
+﻿using Godot;
 
-namespace Game.System.Instance;
+namespace Game.System.Attribute;
 
 public struct Attribute : IAttribute
 {

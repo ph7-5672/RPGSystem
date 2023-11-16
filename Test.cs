@@ -1,3 +1,4 @@
+using Game.System.Attribute;
 using Game.System.Buff;
 using Godot;
 
@@ -6,9 +7,13 @@ public partial class Test : Node2D, IBuffOwner
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		BuffExtension.BuffTick += (owner, state) =>
+		BuffExtension.BuffTick += (owner, buff) =>
 		{
-			GD.Print(state.Timestamp);
+			if (owner is IAttributeOwner attributeOwner)
+			{
+				
+			}
+
 		};
 		this.AddBuff(0);
 		this.AddBuff(1, 1000, 5000);

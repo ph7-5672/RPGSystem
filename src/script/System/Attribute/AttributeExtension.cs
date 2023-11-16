@@ -1,4 +1,6 @@
-﻿namespace Game.System.Attribute;
+﻿using Godot;
+
+namespace Game.System.Attribute;
 
 public static partial class AttributeExtension
 {
