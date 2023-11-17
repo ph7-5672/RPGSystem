@@ -62,13 +62,25 @@ public partial class GameEntry : Node
         datatables.Add(name, array);
     }
 
-
+    /// <summary>
+    /// 获取数据表。
+    /// </summary>
+    /// <param name="name">文件名（无后缀）</param>
+    /// <param name="table">返回数据表</param>
+    /// <returns>是否成功</returns>
     public bool TryGetDatatable(string name, out Array table)
     {
         return datatables.TryGetValue(name, out table);
     }
 
 
+    /// <summary>
+    /// 获取配表数据。
+    /// </summary>
+    /// <param name="name">文件名（无后缀）</param>
+    /// <param name="index">数据索引（所在行）</param>
+    /// <param name="data">返回数据</param>
+    /// <returns>是否成功</returns>
     public bool TryGetData(string name, int index, out Dictionary<string, Variant> data)
     {
         if (datatables.TryGetValue(name, out var table) && index >= 0 && index < table.Count)
