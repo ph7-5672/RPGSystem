@@ -7,7 +7,7 @@ namespace RPGSystem;
 
 public partial class GameEntry : Node
 {
-    // 单例------------------------------
+    // 单例------------------------------begin
 
     public static GameEntry Instance;
 
@@ -16,21 +16,37 @@ public partial class GameEntry : Node
         Instance = this;
     }
 
-    // 单例------------------------------
+    // 单例--------------------------------end
 
 
     public override void _Ready()
     {
-        LoadDatatable("res://src/datatable/attributes.txt");
-        LoadDatatable("res://src/datatable/buffs.txt");
+
+        EnterStage += s =>
+        {
+            if (string.Equals("Preload", s))
+            {
+                LoadDatatable("res://src/datatable/attributes.txt");
+                LoadDatatable("res://src/datatable/buffs.txt");
+            }
+        };
+
+        ChangeStage("Preload");
+        
 
         /* 测试读表，输出 "string"
          TryGetData("attributes", 1, out var attr);
         GD.Print(attr["值类型"]);*/
+        
+        
+        
     }
+    
+    
+    
 
 
-    // 数据表------------------------------
+    // 数据表------------------------------begin
     private Dictionary<string, Array> datatables = new();
     
     /// <summary>
@@ -39,6 +55,8 @@ public partial class GameEntry : Node
     /// <param name="path">指定路径</param>
     public void LoadDatatable(string path)
     {
+        GD.Print($"Loading Datatable {path} ...");
+        
         var fileAccess = FileAccess.Open(path, FileAccess.ModeFlags.Read);
         // 第一行为表头
         var title = fileAccess.GetCsvLine();
@@ -60,6 +78,8 @@ public partial class GameEntry : Node
         var length = path.Length - startIndex - 4; // ".txt"
         var name = path.Substring(startIndex, length);
         datatables.Add(name, array);
+        
+        GD.PrintRich($"[color=green]Loaded Datatable {path}.[/color]");
     }
 
     /// <summary>
@@ -94,6 +114,35 @@ public partial class GameEntry : Node
 
     }
 
-    // 数据表------------------------------
+    // 数据表--------------------------------end
     
+    
+    // 阶段-------------------------------begin
+    public Action<string> EnterStage = delegate{};
+    public Action<string> LeaveStage = delegate{};
+
+    /// <summary>
+    /// 当前阶段。初始化为Preload。
+    /// </summary>
+    public string CurrentStage { get; private set; } = "Start";
+
+    /// <summary>
+    /// 切换阶段。
+    /// 触发上个阶段的离开和下个阶段的进入事件。
+    /// </summary>
+    /// <param name="stage"></param>
+    public void ChangeStage(string stage)
+    {
+        // 必须切换不同阶段。
+        if (string.Equals(stage, CurrentStage))
+        {
+            return;
+        }
+
+        LeaveStage(CurrentStage);
+        EnterStage(stage);
+        CurrentStage = stage;
+    }
+
+    // 阶段---------------------------------end
 }
