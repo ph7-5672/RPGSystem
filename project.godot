@@ -10,11 +10,12 @@ config_version=5
 
 [application]
 
-config/name="RPGSystem"
-run/main_scene="res://test.tscn"
-config/features=PackedStringArray("4.0", "C#", "Forward Plus")
+config/name="rpg-system"
+run/main_scene="uid://cp4ghqwa0mijp"
+config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[dotnet]
+[rendering]
 
-project/assembly_name="RPGSystem"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
