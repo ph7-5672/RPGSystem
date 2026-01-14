@@ -1,16 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://cp4ghqwa0mijp"]
+[gd_scene load_steps=9 format=3 uid="uid://cp4ghqwa0mijp"]
 
+[ext_resource type="Script" uid="uid://5crru1njm5de" path="res://game.gd" id="1_7jktm"]
 [ext_resource type="Script" uid="uid://tgpp7pg7pvht" path="res://data/buff.gd" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://ru5yfavxba0d" path="res://data/entity.gd" id="1_feb5d"]
 [ext_resource type="Script" uid="uid://c4lfm00m18pnj" path="res://data/stat_bonus.gd" id="2_e2o6t"]
 [ext_resource type="Script" uid="uid://bs62tduxe45t4" path="res://systems/buff_system.gd" id="2_fc0e3"]
+[ext_resource type="Script" uid="uid://d2tk3eg44mjry" path="res://systems/entity_system.gd" id="2_ryrav"]
+[ext_resource type="Script" uid="uid://c67njfe8g4noq" path="res://systems/inventory_system.gd" id="4_fc0e3"]
 
-[sub_resource type="Resource" id="Resource_feb5d"]
+[sub_resource type="Resource" id="Resource_eow3j"]
 script = ExtResource("2_e2o6t")
 value = 10.0
 metadata/_custom_type_script = "uid://c4lfm00m18pnj"
 
 [node name="Game" type="Node"]
+script = ExtResource("1_7jktm")
 
 [node name="View" type="Node" parent="."]
 
@@ -20,24 +24,32 @@ metadata/_custom_type_script = "uid://c4lfm00m18pnj"
 
 [node name="Abstraction" type="Node" parent="."]
 
-[node name="Entities" type="Node" parent="Abstraction"]
+[node name="EntitySystem" type="Node" parent="Abstraction"]
+unique_name_in_owner = true
+script = ExtResource("2_ryrav")
+metadata/_custom_type_script = "uid://d2tk3eg44mjry"
 
-[node name="PlayerEntity" type="Node" parent="Abstraction/Entities"]
+[node name="Entity" type="Node" parent="Abstraction/EntitySystem"]
 script = ExtResource("1_feb5d")
 metadata/_custom_type_script = "uid://ru5yfavxba0d"
 
 [node name="BuffSystem" type="Node" parent="Abstraction"]
+unique_name_in_owner = true
 script = ExtResource("2_fc0e3")
+metadata/_custom_type_script = "uid://bs62tduxe45t4"
 
-[node name="AttackUpBuff" type="Node" parent="Abstraction/BuffSystem" node_paths=PackedStringArray("entity")]
+[node name="Buff" type="Node" parent="Abstraction/BuffSystem" node_paths=PackedStringArray("entity")]
 script = ExtResource("1_80nbo")
-entity = NodePath("../../Entities/PlayerEntity")
-buff_name = "攻击力提升"
-icon = "🗡"
-desc = "攻击力提升10点"
-bonus = SubResource("Resource_feb5d")
-duration = 1.0
-interval = 2.0
+entity = NodePath("../../EntitySystem/Entity")
+buff_name = "ss"
+icon = "s"
+desc = "sss"
+bonus = SubResource("Resource_eow3j")
+duration = 2.0
+interval = 1.0
 metadata/_custom_type_script = "uid://tgpp7pg7pvht"
 
-[connection signal="child_entered_tree" from="Abstraction/BuffSystem" to="Abstraction/BuffSystem" method="_on_child_added"]
+[node name="InventorySystem" type="Node" parent="Abstraction"]
+unique_name_in_owner = true
+script = ExtResource("4_fc0e3")
+metadata/_custom_type_script = "uid://c67njfe8g4noq"

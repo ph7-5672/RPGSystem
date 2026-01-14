@@ -1,35 +1,16 @@
-extends Node
-
-func _process(delta: float) -> void:
-	var children = get_children();
-		
-	pass;
-
+extends BaseSystem
+class_name BuffSystem
 
 func _on_child_added(node: Node) -> void:
 	var buff:Buff = node as Buff;
-	if (buff):
-		_init_buff(buff);
+	if (!buff or !buff.entity):
+		return;
+	_init_buff(buff);
 
 func _init_buff(buff: Buff) -> void:
-	_execute_buff(buff);
-	if (buff.duration == 0):
-		_end_buff(buff);
-		return;
-	
-	var tree = get_tree();
-	var duration_timer = tree.create_timer(buff.duration);
-	if (buff.duration <= buff.interval):
-		await duration_timer.timeout;
-		_end_buff(buff);
-		return;
-	
-	var interval_timer = tree.create_timer(buff.interval);
-	while(duration_timer.time_left > 0):
-		await interval_timer.timeout;
-		## buff触发
-		_execute_buff(buff);
-	await duration_timer.timeout;
+	buff.set_meta("elapsed", buff.interval);
+	var timer = get_tree().create_timer(buff.duration);
+	await timer.timeout;
 	_end_buff(buff);
 	
 func _execute_buff(buff: Buff) -> void:
@@ -43,3 +24,14 @@ func _execute_buff(buff: Buff) -> void:
 func _end_buff(buff: Buff) -> void:
 	## buff结束
 	print(buff.buff_name + "结束了");
+	buff.queue_free();
+	
+func _process_child(node: Node, delta:float) -> void:
+	var buff:Buff = node as Buff;
+	if (!buff or !buff.entity):
+		return;
+	var elapsed:float = buff.get_meta("elapsed");
+	if (elapsed >= buff.interval):
+		_execute_buff(buff);
+		elapsed = buff.interval - elapsed;
+	buff.set_meta("elapsed", elapsed + delta);
