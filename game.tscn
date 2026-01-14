@@ -1,17 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://cp4ghqwa0mijp"]
+[gd_scene load_steps=12 format=3 uid="uid://cp4ghqwa0mijp"]
 
 [ext_resource type="Script" uid="uid://5crru1njm5de" path="res://game.gd" id="1_7jktm"]
 [ext_resource type="Script" uid="uid://tgpp7pg7pvht" path="res://data/buff.gd" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://ru5yfavxba0d" path="res://data/entity.gd" id="1_feb5d"]
-[ext_resource type="Script" uid="uid://c4lfm00m18pnj" path="res://data/stat_bonus.gd" id="2_e2o6t"]
 [ext_resource type="Script" uid="uid://bs62tduxe45t4" path="res://systems/buff_system.gd" id="2_fc0e3"]
 [ext_resource type="Script" uid="uid://d2tk3eg44mjry" path="res://systems/entity_system.gd" id="2_ryrav"]
 [ext_resource type="Script" uid="uid://c67njfe8g4noq" path="res://systems/inventory_system.gd" id="4_fc0e3"]
-
-[sub_resource type="Resource" id="Resource_eow3j"]
-script = ExtResource("2_e2o6t")
-value = 10.0
-metadata/_custom_type_script = "uid://c4lfm00m18pnj"
+[ext_resource type="Script" uid="uid://b34k8cx7tpnda" path="res://systems/effect_system.gd" id="4_hve3p"]
+[ext_resource type="Script" uid="uid://c4lfm00m18pnj" path="res://data/effect.gd" id="5_mfdv2"]
+[ext_resource type="Script" uid="uid://c6ook5ahgbgtj" path="res://systems/item_system.gd" id="8_j5wjh"]
+[ext_resource type="Script" uid="uid://ffndbapgtwb" path="res://data/inventory_slot.gd" id="9_mfdv2"]
+[ext_resource type="Script" uid="uid://dfjripgjwdhg1" path="res://data/item.gd" id="9_vef74"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_7jktm")
@@ -33,23 +32,83 @@ metadata/_custom_type_script = "uid://d2tk3eg44mjry"
 script = ExtResource("1_feb5d")
 metadata/_custom_type_script = "uid://ru5yfavxba0d"
 
+[node name="EffectSystem" type="Node" parent="Abstraction"]
+unique_name_in_owner = true
+script = ExtResource("4_hve3p")
+metadata/_custom_type_script = "uid://b34k8cx7tpnda"
+
+[node name="燃烧" type="Node" parent="Abstraction/EffectSystem"]
+script = ExtResource("5_mfdv2")
+icon = "🔥"
+desc = "这个单位被点燃了，每秒掉血"
+mode = 1
+interval = 1.0
+metadata/_custom_type_script = "uid://c4lfm00m18pnj"
+
+[node name="中毒" type="Node" parent="Abstraction/EffectSystem"]
+script = ExtResource("5_mfdv2")
+icon = "🤢"
+desc = "这个单位中毒了，每秒百分比扣除血量"
+mode = 1
+metadata/_custom_type_script = "uid://c4lfm00m18pnj"
+
 [node name="BuffSystem" type="Node" parent="Abstraction"]
 unique_name_in_owner = true
 script = ExtResource("2_fc0e3")
 metadata/_custom_type_script = "uid://bs62tduxe45t4"
 
-[node name="Buff" type="Node" parent="Abstraction/BuffSystem" node_paths=PackedStringArray("entity")]
+[node name="Buff" type="Node" parent="Abstraction/BuffSystem" node_paths=PackedStringArray("entity", "effect")]
 script = ExtResource("1_80nbo")
 entity = NodePath("../../EntitySystem/Entity")
-buff_name = "ss"
-icon = "s"
-desc = "sss"
-bonus = SubResource("Resource_eow3j")
-duration = 2.0
-interval = 1.0
+effect = NodePath("../../EffectSystem/燃烧")
+duration = 3.0
+value = 10.0
 metadata/_custom_type_script = "uid://tgpp7pg7pvht"
 
 [node name="InventorySystem" type="Node" parent="Abstraction"]
 unique_name_in_owner = true
 script = ExtResource("4_fc0e3")
 metadata/_custom_type_script = "uid://c67njfe8g4noq"
+
+[node name="InventorySlot" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity", "item")]
+script = ExtResource("9_mfdv2")
+entity = NodePath("../../EntitySystem/Entity")
+inventory_name = "装备栏"
+item = NodePath("../../ItemSystem/短剑")
+count = 1
+metadata/_custom_type_script = "uid://ffndbapgtwb"
+
+[node name="InventorySlot2" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity")]
+script = ExtResource("9_mfdv2")
+entity = NodePath("../../EntitySystem/Entity")
+inventory_name = "装备栏"
+metadata/_custom_type_script = "uid://ffndbapgtwb"
+
+[node name="InventorySlot3" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity")]
+script = ExtResource("9_mfdv2")
+entity = NodePath("../../EntitySystem/Entity")
+inventory_name = "装备栏"
+metadata/_custom_type_script = "uid://ffndbapgtwb"
+
+[node name="InventorySlot4" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity")]
+script = ExtResource("9_mfdv2")
+entity = NodePath("../../EntitySystem/Entity")
+inventory_name = "装备栏"
+metadata/_custom_type_script = "uid://ffndbapgtwb"
+
+[node name="InventorySlot5" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity")]
+script = ExtResource("9_mfdv2")
+entity = NodePath("../../EntitySystem/Entity")
+inventory_name = "装备栏"
+metadata/_custom_type_script = "uid://ffndbapgtwb"
+
+[node name="ItemSystem" type="Node" parent="Abstraction"]
+unique_name_in_owner = true
+script = ExtResource("8_j5wjh")
+metadata/_custom_type_script = "uid://c6ook5ahgbgtj"
+
+[node name="短剑" type="Node" parent="Abstraction/ItemSystem"]
+script = ExtResource("9_vef74")
+icon = "🗡"
+capacity = 1
+metadata/_custom_type_script = "uid://dfjripgjwdhg1"

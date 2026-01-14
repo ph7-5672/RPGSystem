@@ -1,0 +1,2 @@
+extends BaseSystem
+class_name ItemSystem
