@@ -1,2 +1,0 @@
-extends BaseSystem
-class_name InventorySystem

@@ -10,6 +10,7 @@ enum ComputeMode #加成计算方式
 	Mul, #乘算
 }
 
+@export var id:int;
 @export var icon:String; #图标
 @export_multiline var desc:String; #描述
 @export var stat:Entity.Stat; #属性名

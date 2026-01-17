@@ -1,16 +1,21 @@
-[gd_scene load_steps=12 format=3 uid="uid://cp4ghqwa0mijp"]
+[gd_scene load_steps=9 format=3 uid="uid://cp4ghqwa0mijp"]
 
 [ext_resource type="Script" uid="uid://5crru1njm5de" path="res://game.gd" id="1_7jktm"]
-[ext_resource type="Script" uid="uid://tgpp7pg7pvht" path="res://data/buff.gd" id="1_80nbo"]
-[ext_resource type="Script" uid="uid://ru5yfavxba0d" path="res://data/entity.gd" id="1_feb5d"]
 [ext_resource type="Script" uid="uid://bs62tduxe45t4" path="res://systems/buff_system.gd" id="2_fc0e3"]
-[ext_resource type="Script" uid="uid://d2tk3eg44mjry" path="res://systems/entity_system.gd" id="2_ryrav"]
-[ext_resource type="Script" uid="uid://c67njfe8g4noq" path="res://systems/inventory_system.gd" id="4_fc0e3"]
-[ext_resource type="Script" uid="uid://b34k8cx7tpnda" path="res://systems/effect_system.gd" id="4_hve3p"]
+[ext_resource type="Script" uid="uid://ru5yfavxba0d" path="res://data/entity.gd" id="2_ryrav"]
+[ext_resource type="Script" uid="uid://hban48powdjl" path="res://data/gear.gd" id="3_fc0e3"]
 [ext_resource type="Script" uid="uid://c4lfm00m18pnj" path="res://data/effect.gd" id="5_mfdv2"]
-[ext_resource type="Script" uid="uid://c6ook5ahgbgtj" path="res://systems/item_system.gd" id="8_j5wjh"]
-[ext_resource type="Script" uid="uid://ffndbapgtwb" path="res://data/inventory_slot.gd" id="9_mfdv2"]
-[ext_resource type="Script" uid="uid://dfjripgjwdhg1" path="res://data/item.gd" id="9_vef74"]
+[ext_resource type="Script" uid="uid://tgpp7pg7pvht" path="res://data/buff.gd" id="6_eow3j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jktm"]
+bg_color = Color(0.25565878, 0.2556588, 0.2556587, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fc0e3"]
+bg_color = Color(0.6, 0.6, 0.6, 0.4509804)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="Game" type="Node"]
 script = ExtResource("1_7jktm")
@@ -21,23 +26,65 @@ script = ExtResource("1_7jktm")
 
 [node name="Canvas" type="CanvasLayer" parent="View"]
 
-[node name="Abstraction" type="Node" parent="."]
+[node name="BuffTest" type="Control" parent="View/Canvas"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 414.0
+offset_bottom = 324.0
 
-[node name="EntitySystem" type="Node" parent="Abstraction"]
+[node name="GridContainer" type="GridContainer" parent="View/Canvas/BuffTest"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BuffPanel" type="Panel" parent="View/Canvas/BuffTest/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7jktm")
+
+[node name="IconLabel" type="Label" parent="View/Canvas/BuffTest/GridContainer/BuffPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "🔥"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="View/Canvas/BuffTest/GridContainer/BuffPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_fc0e3")
+fill_mode = 3
+show_percentage = false
+
+[node name="Data" type="Node" parent="."]
+
+[node name="Entities" type="Node" parent="Data"]
 unique_name_in_owner = true
-script = ExtResource("2_ryrav")
-metadata/_custom_type_script = "uid://d2tk3eg44mjry"
 
-[node name="Entity" type="Node" parent="Abstraction/EntitySystem"]
-script = ExtResource("1_feb5d")
+[node name="Entity" type="Node" parent="Data/Entities"]
+script = ExtResource("2_ryrav")
 metadata/_custom_type_script = "uid://ru5yfavxba0d"
 
-[node name="EffectSystem" type="Node" parent="Abstraction"]
+[node name="InventorySlots" type="Node" parent="Data"]
 unique_name_in_owner = true
-script = ExtResource("4_hve3p")
-metadata/_custom_type_script = "uid://b34k8cx7tpnda"
 
-[node name="燃烧" type="Node" parent="Abstraction/EffectSystem"]
+[node name="Configs" type="Node" parent="Data"]
+
+[node name="Effects" type="Node" parent="Data/Configs"]
+unique_name_in_owner = true
+
+[node name="燃烧" type="Node" parent="Data/Configs/Effects"]
 script = ExtResource("5_mfdv2")
 icon = "🔥"
 desc = "这个单位被点燃了，每秒掉血"
@@ -45,70 +92,33 @@ mode = 1
 interval = 1.0
 metadata/_custom_type_script = "uid://c4lfm00m18pnj"
 
-[node name="中毒" type="Node" parent="Abstraction/EffectSystem"]
+[node name="中毒" type="Node" parent="Data/Configs/Effects"]
 script = ExtResource("5_mfdv2")
 icon = "🤢"
 desc = "这个单位中毒了，每秒百分比扣除血量"
 mode = 1
 metadata/_custom_type_script = "uid://c4lfm00m18pnj"
 
-[node name="BuffSystem" type="Node" parent="Abstraction"]
+[node name="Gears" type="Node" parent="Data/Configs"]
+unique_name_in_owner = true
+
+[node name="短剑" type="Node" parent="Data/Configs/Gears"]
+script = ExtResource("3_fc0e3")
+icon = "🗡"
+capacity = 1
+metadata/_custom_type_script = "uid://hban48powdjl"
+
+[node name="Systems" type="Node" parent="."]
+
+[node name="BuffSystem" type="Node" parent="Systems"]
 unique_name_in_owner = true
 script = ExtResource("2_fc0e3")
 metadata/_custom_type_script = "uid://bs62tduxe45t4"
 
-[node name="Buff" type="Node" parent="Abstraction/BuffSystem" node_paths=PackedStringArray("entity", "effect")]
-script = ExtResource("1_80nbo")
-entity = NodePath("../../EntitySystem/Entity")
-effect = NodePath("../../EffectSystem/燃烧")
+[node name="Buff" type="Node" parent="Systems/BuffSystem" node_paths=PackedStringArray("entity", "effect")]
+script = ExtResource("6_eow3j")
+entity = NodePath("../../../Data/Entities/Entity")
+effect = NodePath("../../../Data/Configs/Effects/燃烧")
+value = 1.0
 duration = 3.0
-value = 10.0
 metadata/_custom_type_script = "uid://tgpp7pg7pvht"
-
-[node name="InventorySystem" type="Node" parent="Abstraction"]
-unique_name_in_owner = true
-script = ExtResource("4_fc0e3")
-metadata/_custom_type_script = "uid://c67njfe8g4noq"
-
-[node name="InventorySlot" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity", "item")]
-script = ExtResource("9_mfdv2")
-entity = NodePath("../../EntitySystem/Entity")
-inventory_name = "装备栏"
-item = NodePath("../../ItemSystem/短剑")
-count = 1
-metadata/_custom_type_script = "uid://ffndbapgtwb"
-
-[node name="InventorySlot2" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity")]
-script = ExtResource("9_mfdv2")
-entity = NodePath("../../EntitySystem/Entity")
-inventory_name = "装备栏"
-metadata/_custom_type_script = "uid://ffndbapgtwb"
-
-[node name="InventorySlot3" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity")]
-script = ExtResource("9_mfdv2")
-entity = NodePath("../../EntitySystem/Entity")
-inventory_name = "装备栏"
-metadata/_custom_type_script = "uid://ffndbapgtwb"
-
-[node name="InventorySlot4" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity")]
-script = ExtResource("9_mfdv2")
-entity = NodePath("../../EntitySystem/Entity")
-inventory_name = "装备栏"
-metadata/_custom_type_script = "uid://ffndbapgtwb"
-
-[node name="InventorySlot5" type="Node" parent="Abstraction/InventorySystem" node_paths=PackedStringArray("entity")]
-script = ExtResource("9_mfdv2")
-entity = NodePath("../../EntitySystem/Entity")
-inventory_name = "装备栏"
-metadata/_custom_type_script = "uid://ffndbapgtwb"
-
-[node name="ItemSystem" type="Node" parent="Abstraction"]
-unique_name_in_owner = true
-script = ExtResource("8_j5wjh")
-metadata/_custom_type_script = "uid://c6ook5ahgbgtj"
-
-[node name="短剑" type="Node" parent="Abstraction/ItemSystem"]
-script = ExtResource("9_vef74")
-icon = "🗡"
-capacity = 1
-metadata/_custom_type_script = "uid://dfjripgjwdhg1"
