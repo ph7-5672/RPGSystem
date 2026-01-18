@@ -1,6 +1,14 @@
 extends BaseSystem
 class_name BuffSystem
 
+func add_buff(entity: Entity, effect:Effect, value:float, duration: float) -> void:
+	var buff = Buff.new();
+	buff.entity = entity;
+	buff.effect = effect;
+	buff.value = value;
+	buff.duration = duration;
+	add_child(buff);
+
 func _on_child_added(node: Node) -> void:
 	var buff:Buff = node as Buff;
 	if (!buff or !buff.entity):

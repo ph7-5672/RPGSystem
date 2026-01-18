@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://5crru1njm5de" path="res://game.gd" id="1_7jktm"]
 [ext_resource type="Script" uid="uid://bs62tduxe45t4" path="res://systems/buff_system.gd" id="2_fc0e3"]
-[ext_resource type="Script" uid="uid://ru5yfavxba0d" path="res://data/entity.gd" id="2_ryrav"]
 [ext_resource type="Script" uid="uid://hban48powdjl" path="res://data/gear.gd" id="3_fc0e3"]
+[ext_resource type="Script" uid="uid://detam0xfhqamn" path="res://test.gd" id="5_7jktm"]
 [ext_resource type="Script" uid="uid://c4lfm00m18pnj" path="res://data/effect.gd" id="5_mfdv2"]
-[ext_resource type="Script" uid="uid://tgpp7pg7pvht" path="res://data/buff.gd" id="6_eow3j"]
+[ext_resource type="Script" uid="uid://djxyqy7vif5gw" path="res://systems/event_system.gd" id="5_ryrav"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jktm"]
 bg_color = Color(0.25565878, 0.2556588, 0.2556587, 1)
@@ -72,10 +72,6 @@ show_percentage = false
 [node name="Entities" type="Node" parent="Data"]
 unique_name_in_owner = true
 
-[node name="Entity" type="Node" parent="Data/Entities"]
-script = ExtResource("2_ryrav")
-metadata/_custom_type_script = "uid://ru5yfavxba0d"
-
 [node name="InventorySlots" type="Node" parent="Data"]
 unique_name_in_owner = true
 
@@ -115,10 +111,12 @@ unique_name_in_owner = true
 script = ExtResource("2_fc0e3")
 metadata/_custom_type_script = "uid://bs62tduxe45t4"
 
-[node name="Buff" type="Node" parent="Systems/BuffSystem" node_paths=PackedStringArray("entity", "effect")]
-script = ExtResource("6_eow3j")
-entity = NodePath("../../../Data/Entities/Entity")
-effect = NodePath("../../../Data/Configs/Effects/燃烧")
-value = 1.0
-duration = 3.0
-metadata/_custom_type_script = "uid://tgpp7pg7pvht"
+[node name="EventSystem" type="Node" parent="Systems"]
+unique_name_in_owner = true
+script = ExtResource("5_ryrav")
+metadata/_custom_type_script = "uid://djxyqy7vif5gw"
+
+[node name="Commons" type="Node" parent="."]
+
+[node name="Test" type="Node" parent="."]
+script = ExtResource("5_7jktm")
