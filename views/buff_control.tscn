@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://2jqx62dmor8w"]
+
+[ext_resource type="Script" uid="uid://fncl05h3n66" path="res://views/buff_control.gd" id="1_1ydfk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ydfk"]
+bg_color = Color(0.15294118, 0.15294118, 0.15294118, 0.80784315)
+
+[node name="BuffControl" type="Control"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 64.0
+offset_bottom = 64.0
+script = ExtResource("1_1ydfk")
+desc = "测试"
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="IconLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "中毒"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MaskPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ydfk")
